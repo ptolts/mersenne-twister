@@ -63,7 +63,12 @@ class Mersenne
     @index += 1
     y.least_significant
   end
-  alias :random :extract_number
+
+  def random(max)
+    max = max - 1
+    min = 1
+    extract_number % (max - min + 1) + min
+  end
 
   def twist
     (0..(N - 1)).each do |i|
@@ -78,12 +83,12 @@ class Mersenne
 end
 
 mersenne = Mersenne.new(1)
-image_size = 512
+image_size = 2048
 
 png = ChunkyPNG::Image.new(image_size, image_size, ChunkyPNG::Color::WHITE)
 (1..image_size - 1).each do |x|
   (1..image_size - 1).each do |y|
-    png[x, y] = ChunkyPNG::Color.rgb(0, 0, 0) if (mersenne.random % 2 == 0)
+    png[mersenne.random(image_size), mersenne.random(image_size)] = ChunkyPNG::Color.rgb(0,0,0)
   end
 end
 
